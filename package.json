@@ -1,0 +1,11 @@
+{
+  "name": "rc522-server",
+  "version": "1.0.0",
+  "main": "server.js",
+  "repository": "https://github.com/NTUgEEk/rc522-server",
+  "author": "Paul Wang",
+  "license": "MIT",
+  "dependencies": {
+    "websocket": "^1.0.24"
+  }
+}
