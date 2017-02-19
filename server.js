@@ -38,6 +38,7 @@ webSocketServer.on('request', (request) => {
 });
 
 function sendUid(uid) {
+  console.log(uid);
   if (appConnection !== null) {
     appConnection.sendUTF(uid);
   }
@@ -52,7 +53,7 @@ function validateUid(uid) {
 }
 
 // spawn the rfid reader python process
-const readRFID = spawn('python3', ['./read.py']);
+const readRFID = spawn('sudo', ['python3', './read.py']);
 
 readRFID.stdout.on('data', (data) => {
   // check if the uid is valid
