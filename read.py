@@ -29,17 +29,21 @@ while run:
 
     (error, uid) = rdr.anticoll()
     if not error:
-        print("[%d,%d,%d,%d]" % (uid[0],uid[1],uid[2],uid[3]))
-        sys.stdout.flush()
+        # print uid
+        # print("[%d,%d,%d,%d]" % (uid[0],uid[1],uid[2],uid[3]))
+        # sys.stdout.flush()
 
-        # print("Setting tag")
-        # util.set_tag(uid)
-        # print("\nAuthorizing")
-        # #util.auth(rdr.auth_a, [0xFF, 0x34, 0x56, 0x78, 0x96, 0x92])
-        # util.auth(rdr.auth_a, [0x20, 0x07, 0x07, 0x31, 0xAB, 0xCD])
-        # print("\nReading")
-        # util.read_out(56)
-        # print("\nDeauthorizing")
-        # util.deauth()
+        # set tag
+        util.set_tag(uid)
+        # authorize with student_id card key
+        util.auth(rdr.auth_a, [0x20, 0x07, 0x07, 0x31, 0xAB, 0xCD])
+        # Read from the first block of sector 14
+        error, data = util.read_out(56)
+        if (not error):
+            student_id = "".join([ chr(x) for x in data[:9] ])
+            print('"%s"' % (student_id))
+            sys.stdout.flush()
+        # deauthorize
+        util.deauth()
 
         time.sleep(1)

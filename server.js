@@ -37,10 +37,10 @@ webSocketServer.on('request', (request) => {
   });
 });
 
-function sendUid(uid) {
-  console.log(uid);
+function send(data) {
+  console.log(data);
   if (appConnection !== null) {
-    appConnection.sendUTF(uid);
+    appConnection.sendUTF(data);
   }
 }
  
@@ -52,15 +52,29 @@ function validateUid(uid) {
   return true;
 }
 
+function validateStudentId(studentId) {
+  return /^[a-z]\d{8}$/.test(studentId);
+}
+
 // spawn the rfid reader python process
 const readRFID = spawn('sudo', ['python3', './read.py']);
 
 readRFID.stdout.on('data', (data) => {
   // check if the uid is valid
   try {
-    const uid = JSON.parse(data);
-    if (validateUid(uid)) {
-      sendUid(uid.join('.'));
+    // check uid
+    // const uid = JSON.parse(data);
+    // if (validateUid(uid)) {
+      // send(uid.join('.'));
+    // }
+
+    // check student_id
+    let studentId = JSON.parse(data);
+
+    // always start with lowercase letter
+    studentId = studentId.toLowerCase();
+    if (validateStudentId(studentId)) {
+      send(studentId);
     }
   } catch (e) {
     // catch SyntaxError thrown by JSON.parse()
